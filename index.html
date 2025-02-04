@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optical Illusion</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="illusionCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("illusionCanvas");
+        const ctx = canvas.getContext("2d");
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        let angle = 0;
+
+        function drawIllusion() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.min(canvas.width, canvas.height) / 2;
+            const numRings = 30;
+
+            for (let i = 0; i < numRings; i++) {
+                ctx.beginPath();
+                const radius = (i / numRings) * maxRadius;
+                const lineWidth = maxRadius / (numRings * 2);
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.lineWidth = lineWidth;
+                ctx.strokeStyle = `hsl(${(i * 15 + angle) % 360}, 100%, 50%)`;
+                ctx.stroke();
+            }
+
+            angle += 2; // Adjust speed of illusion
+            requestAnimationFrame(drawIllusion);
+        }
+
+        drawIllusion();
+    </script>
+</body>
+</html>
